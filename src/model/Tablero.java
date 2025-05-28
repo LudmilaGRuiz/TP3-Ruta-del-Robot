@@ -3,11 +3,35 @@ package model;
 public class Tablero {
     private int ancho;
     private int alto;
+    private Boolean[][] celdas;
+
 
     public Tablero(int ancho, int alto) {
         this.ancho = ancho;
         this.alto = alto;
+        this.celdas = new Boolean[alto][ancho];
+        for (int i = 0; i < alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                celdas[i][j] = false; // Inicializar todas las celdas como no ocupadas
+            }
+        }
+
     }
+    public Boolean[][] getCeldas() {
+        return celdas;
+    }
+
+    public void setCeldas(Boolean[][] celdas) {
+        this.celdas = celdas;
+    }
+    
+    public void tableroAleatorio() {
+        for (int i = 0; i < alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                celdas[i][j] = Math.random() < 0.5; // Asigna true o false aleatoriamente
+            }
+        }
+    
 
     public int getAncho() {
         return ancho;

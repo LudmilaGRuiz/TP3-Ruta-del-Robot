@@ -2,7 +2,7 @@ package model;
 
 import java.util.List;
 
-public class Robot {
+public class Robot  {
     private int x;
     private int y;
     private List <Boolean> movimientos; 
@@ -12,6 +12,20 @@ public class Robot {
         this.y = y;
         this.movimientos = new java.util.ArrayList<>();
     }
+    
+    public void movimientoAleatorio() {
+        // Genera un movimiento aleatorio y lo agrega a la lista de movimientos
+        boolean movimiento = Math.random() < 0.5; // true o false aleatorio
+        movimientos.add(movimiento);
+        
+        // Actualiza las coordenadas del robot según el movimiento
+        if (movimiento) {
+            x++; // Mover a la derecha
+        } else {
+            y++; // Mover hacia abajo
+        }
+    }
+    
 
     public int getX() {
         return x;
