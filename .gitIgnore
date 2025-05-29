@@ -1,0 +1,23 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de compilación Java
+/bin/
+/build/
+/out/
+*.class
+
+# Archivos de configuración de IDE
+*.iml
+.idea/
+*.vscode/
+*.log
+
+# Archivos temporales
+*.tmp
+*.swp
+*~
+
+# Archivos de usuario de VSCode
+.vscode/
