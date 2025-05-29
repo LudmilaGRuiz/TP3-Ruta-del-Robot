@@ -24,14 +24,14 @@ public class Tablero {
     public void setCeldas(Boolean[][] celdas) {
         this.celdas = celdas;
     }
-    
+
     public void tableroAleatorio() {
         for (int i = 0; i < alto; i++) {
             for (int j = 0; j < ancho; j++) {
                 celdas[i][j] = Math.random() < 0.5; // Asigna true o false aleatoriamente
             }
         }
-    
+    }
 
     public int getAncho() {
         return ancho;
