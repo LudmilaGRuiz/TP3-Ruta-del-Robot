@@ -32,7 +32,7 @@ public class Controlador {
     }
 
     public void encontrarCaminoValido() {
-        encontrarCaminoValido(tablero, 0);
+        encontrarCaminoValido(tablero, 1);
     }
 
     public void encontrarCaminoValido(Tablero tablero, int contador) {
