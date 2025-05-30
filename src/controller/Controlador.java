@@ -32,14 +32,14 @@ public class Controlador {
     }
 
     public void encontrarCaminoValido() {
-        encontrarCaminoValido(tablero, 0, 0);
+        encontrarCaminoValido(tablero, 0);
     }
 
-    public void encontrarCaminoValido(Tablero tablero, int contador, int contadorCorrectos) {
+    public void encontrarCaminoValido(Tablero tablero, int contador) {
         Robot robotAux = new Robot(tablero.getValorCasillero(0, 0));
         robotAux = moverRobotHastaElFinal(robotAux);
 
-        if (verificarValidezRobot(robotAux) || contadorCorrectos == 100) {
+        if (verificarValidezRobot(robotAux) || contador == 10000) {
             if (robotAux.getSumaDeCasilleros() == 0) {
                 int contadorDerecha = 0;
                 int contadorAbajo = 0;
@@ -50,21 +50,21 @@ public class Controlador {
                         contadorAbajo++;
                     }
                 }
-                System.out.print("Camino valido encontrado en " + contador + " movimientos");
+                System.out.print("Camino valido encontrado en " + contador + " intentos, con suma de casilleros 0");
                 System.out.println(
                         "\nMovimientos realizados: " + contadorDerecha + " Derecha, " + contadorAbajo + " Abajo");
             } else {
-                System.out.println("No se encontro un camino valido en " + contador + " movimientos");
+                System.out.println("No se encontro un camino valido en " + contador + " intentos");
             }
             return;
         }
 
         if (tablero.getFilas() - 1 == robotAux.getX() && tablero.getColumnas() - 1 == robotAux.getY()) {
-            System.out.print("Camino valido encontrado en " + contador + " movimientos");
+            System.out.print("Camino valido encontrado en " + contador + " intentos");
             System.out.println("- Suma de casilleros: " + robotAux.getSumaDeCasilleros());
-            encontrarCaminoValido(tablero, contador + 1, contadorCorrectos + 1);
+            encontrarCaminoValido(tablero, contador + 1);
         } else {
-            encontrarCaminoValido(tablero, contador + 1, contadorCorrectos);
+            encontrarCaminoValido(tablero, contador + 1);
         }
     }
 
