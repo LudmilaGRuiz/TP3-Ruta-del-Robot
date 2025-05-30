@@ -1,22 +1,24 @@
 package model;
 
+import java.util.Random;
+
 public class Tablero {
-    private int ancho;
-    private int alto;
+    private int filas;
+    private int columnas;
     private Boolean[][] celdas;
 
-
-    public Tablero(int ancho, int alto) {
-        this.ancho = ancho;
-        this.alto = alto;
-        this.celdas = new Boolean[alto][ancho];
-        for (int i = 0; i < alto; i++) {
-            for (int j = 0; j < ancho; j++) {
-                celdas[i][j] = false; // Inicializar todas las celdas como no ocupadas
+    public Tablero(int filas, int columnas) {
+        this.filas = filas;
+        this.columnas = columnas;
+        this.celdas = new Boolean[filas][columnas];
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                celdas[i][j] = false;
             }
         }
 
     }
+
     public Boolean[][] getCeldas() {
         return celdas;
     }
@@ -26,52 +28,69 @@ public class Tablero {
     }
 
     public void tableroAleatorio() {
-        for (int i = 0; i < alto; i++) {
-            for (int j = 0; j < ancho; j++) {
-                celdas[i][j] = Math.random() < 0.5; // Asigna true o false aleatoriamente
+        Random random = new Random();
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                celdas[i][j] = random.nextBoolean();
             }
         }
     }
 
-    public int getAncho() {
-        return ancho;
+    public int getValorCasillero(int x, int y) {
+        if (x < 0 || x >= filas || y < 0 || y >= columnas) {
+            return 0;
+        }
+        return celdas[x][y] ? 1 : -1;
     }
 
-    public void setAncho(int ancho) {
-        this.ancho = ancho;
+    public int getFilas() {
+        return filas;
     }
 
-    public int getAlto() {
-        return alto;
+    public void setFilas(int filas) {
+        this.filas = filas;
     }
 
-    public void setAlto(int alto) {
-        this.alto = alto;
+    public int getColumnas() {
+        return columnas;
     }
-    
+
+    public void setColumnas(int columnas) {
+        this.columnas = columnas;
+    }
+
     @Override
     public String toString() {
-        return "Tablero{" +
-                "ancho=" + ancho +
-                ", alto=" + alto +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Tablero de ").append(filas).append("x").append(columnas).append(":\n");
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                sb.append(celdas[i][j] ? " 1 " : "-1 ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Tablero)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Tablero))
+            return false;
 
         Tablero tablero = (Tablero) o;
 
-        if (ancho != tablero.ancho) return false;
-        return alto == tablero.alto;
+        if (filas != tablero.filas)
+            return false;
+        return columnas == tablero.columnas;
     }
 
     @Override
     public int hashCode() {
-        int result = ancho;
-        result = 31 * result + alto;
+        int result = filas;
+        result = 31 * result + columnas;
         return result;
     }
-    
+
 }

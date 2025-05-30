@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Robot {
     private int x;
@@ -9,29 +10,32 @@ public class Robot {
     private ArrayList<Boolean> movimientos; // Lista de movimientos del robot (true = derecha, false = abajo)
     private int cantidadDeMovimientos;
 
-    public Robot() {
+    public Robot(int ValorCasillero) {
         this.x = 0;
         this.y = 0;
-        this.sumaDeCasilleros = 0;
+        this.sumaDeCasilleros = ValorCasillero;
         this.movimientos = new ArrayList<Boolean>();
         this.cantidadDeMovimientos = 0;
     }
 
     public void movimientoAleatorio() {
-        // Genera un movimiento aleatorio y lo agrega a la lista de movimientos
-        boolean movimiento = Math.random() < 0.5; // true o false aleatorio
+        Random random = new Random();
+        boolean movimiento = random.nextBoolean();
         movimientos.add(movimiento);
         sumaDeMovimiento();
-        // Actualiza las coordenadas del robot según el movimiento
         if (movimiento) {
-            x++; // Mover a la derecha
+            y++;
         } else {
-            y++; // Mover hacia abajo
+            x++;
         }
     }
 
-    public void sumaDeMovimiento(){
+    public void sumaDeMovimiento() {
         this.cantidadDeMovimientos++;
+    }
+
+    public void sumaDeCasilleros(int casillero) {
+        this.sumaDeCasilleros += casillero;
     }
 
     public int getX() {
