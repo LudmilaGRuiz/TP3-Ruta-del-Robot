@@ -11,9 +11,7 @@ import model.Tablero;
 public class Controlador {
     private Tablero tablero;
 
-    public Controlador(int ancho, int alto) {
-        this.tablero = new Tablero(ancho, alto);
-        tablero.tableroAleatorio(); // Genera un tablero aleatorio al iniciar
+    public Controlador() {
     }
 
     public Robot moverRobotHastaElFinal(Robot robotMov) {
@@ -28,6 +26,11 @@ public class Controlador {
         return tablero;
     }
 
+    public void crearTablero(int ancho, int alto) {
+        this.tablero = new Tablero(ancho, alto);
+        tablero.tableroAleatorio();
+    }
+
     public Boolean verificarMovimientoRobot(int x, int y) {
         // Verifica si el movimiento del robot es válido dentro del tablero
         if (x < 0 || x >= tablero.getAncho() || y < 0 || y >= tablero.getAlto()) {
@@ -37,7 +40,6 @@ public class Controlador {
     }
 
     public void encontrarCaminoValido() {
-        // Método para encontrar un camino válido desde (0,0) hasta (ancho-1, alto-1)
         encontrarCaminoValido(tablero, 0);
     }
 
