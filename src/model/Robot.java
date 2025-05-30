@@ -1,23 +1,27 @@
 package model;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class Robot  {
+public class Robot {
     private int x;
     private int y;
-    private List <Boolean> movimientos; 
-    
-    public Robot(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.movimientos = new java.util.ArrayList<>();
+    private int sumaDeCasilleros;
+    private ArrayList<Boolean> movimientos; // Lista de movimientos del robot (true = derecha, false = abajo)
+    private int cantidadDeMovimientos;
+
+    public Robot() {
+        this.x = 0;
+        this.y = 0;
+        this.sumaDeCasilleros = 0;
+        this.movimientos = new ArrayList<Boolean>();
+        this.cantidadDeMovimientos = 0;
     }
-    
+
     public void movimientoAleatorio() {
         // Genera un movimiento aleatorio y lo agrega a la lista de movimientos
         boolean movimiento = Math.random() < 0.5; // true o false aleatorio
         movimientos.add(movimiento);
-        
+        sumaDeMovimiento();
         // Actualiza las coordenadas del robot según el movimiento
         if (movimiento) {
             x++; // Mover a la derecha
@@ -25,7 +29,10 @@ public class Robot  {
             y++; // Mover hacia abajo
         }
     }
-    
+
+    public void sumaDeMovimiento(){
+        this.cantidadDeMovimientos++;
+    }
 
     public int getX() {
         return x;
@@ -43,13 +50,30 @@ public class Robot  {
         this.y = y;
     }
 
-    public List<Boolean> getMovimientos() {
+    public ArrayList<Boolean> getMovimientos() {
         return movimientos;
     }
 
-    public void setMovimientos(List<Boolean> movimientos) {
+    public void setMovimientos(ArrayList<Boolean> movimientos) {
         this.movimientos = movimientos;
     }
+
+    public int getSumaDeCasilleros() {
+        return sumaDeCasilleros;
+    }
+
+    public void setSumaDeCasilleros(int sumaDeCasilleros) {
+        this.sumaDeCasilleros = sumaDeCasilleros;
+    }
+
+    public int getCantidadDeMovimientos() {
+        return cantidadDeMovimientos;
+    }
+
+    public void setCantidadDeMovimientos(int cantidadDeMovimientos) {
+        this.cantidadDeMovimientos = cantidadDeMovimientos;
+    }
+
     @Override
     public String toString() {
         return "Robot{" +
@@ -57,8 +81,6 @@ public class Robot  {
                 ", y=" + y +
                 ", movimientos=" + movimientos +
                 '}';
-    }   
+    }
 
-
-    
 }
