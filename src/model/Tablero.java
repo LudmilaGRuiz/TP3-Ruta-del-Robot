@@ -11,12 +11,6 @@ public class Tablero {
         this.filas = filas;
         this.columnas = columnas;
         this.celdas = new Boolean[filas][columnas];
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                celdas[i][j] = false;
-            }
-        }
-
     }
 
     public Boolean[][] getCeldas() {
