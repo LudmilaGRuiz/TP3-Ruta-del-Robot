@@ -32,7 +32,7 @@ public class Tablero {
 
     public int getValorCasillero(int x, int y) {
         if (x < 0 || x >= filas || y < 0 || y >= columnas) {
-            return 0;
+            throw new IndexOutOfBoundsException("Índices fuera de los límites del tablero.");
         }
         return celdas[x][y] ? 1 : -1;
     }
