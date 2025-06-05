@@ -5,19 +5,19 @@ import java.util.Random;
 public class Tablero {
     private int filas;
     private int columnas;
-    private Boolean[][] celdas;
+    private Integer[][] celdas;
 
     public Tablero(int filas, int columnas) {
         this.filas = filas;
         this.columnas = columnas;
-        this.celdas = new Boolean[filas][columnas];
+        this.celdas = new Integer[filas][columnas];
     }
 
-    public Boolean[][] getCeldas() {
+    public Integer[][] getCeldas() {
         return celdas;
     }
 
-    public void setCeldas(Boolean[][] celdas) {
+    public void setCeldas(Integer[][] celdas) {
         this.celdas = celdas;
     }
 
@@ -25,16 +25,16 @@ public class Tablero {
         Random random = new Random();
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                celdas[i][j] = random.nextBoolean();
+                celdas[i][j] = (random.nextBoolean()) ? 1 : -1;
             }
         }
     }
 
-    public int getValorCasillero(int x, int y) {
+    public Integer getValorCasillero(int x, int y) {
         if (x < 0 || x >= filas || y < 0 || y >= columnas) {
             throw new IndexOutOfBoundsException("Índices fuera de los límites del tablero.");
         }
-        return celdas[x][y] ? 1 : -1;
+        return celdas[x][y];
     }
 
     public int getFilas() {
@@ -59,7 +59,7 @@ public class Tablero {
         sb.append("Tablero de ").append(filas).append("x").append(columnas).append(":\n");
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                sb.append(celdas[i][j] ? " 1 " : "-1 ");
+                sb.append(celdas[i][j].toString());
             }
             sb.append("\n");
         }
@@ -86,5 +86,4 @@ public class Tablero {
         result = 31 * result + columnas;
         return result;
     }
-
 }

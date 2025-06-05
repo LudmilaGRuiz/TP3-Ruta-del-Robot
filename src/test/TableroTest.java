@@ -19,10 +19,10 @@ public class TableroTest {
     public void testInicializacionTablero() {
         assertEquals(3, tablero.getFilas());
         assertEquals(3, tablero.getColumnas());
-        Boolean[][] celdas = tablero.getCeldas();
+        Integer[][] celdas = tablero.getCeldas();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                assertFalse(celdas[i][j]);
+                assertEquals(0,celdas[i][j]);
             }
         }
     }

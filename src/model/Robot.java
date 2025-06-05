@@ -30,6 +30,9 @@ public class Robot {
         }
     }
 
+    public void reiniciar() {
+    	
+    }
     public void sumaDeMovimiento() {
         this.cantidadDeMovimientos++;
     }
