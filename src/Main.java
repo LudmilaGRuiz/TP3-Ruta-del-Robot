@@ -1,7 +1,6 @@
 import java.awt.EventQueue;
 
 import controller.Controlador;
-import vista.MainWindow;
 
 public class Main {
     public static void main(String[] args) {
