@@ -19,10 +19,10 @@ public class TableroTest {
     public void testInicializacionTablero() {
         assertEquals(3, tablero.getFilas());
         assertEquals(3, tablero.getColumnas());
-        Integer[][] celdas = tablero.getCeldas();
+        Boolean[][] celdas = tablero.getCeldas();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                assertEquals(0,celdas[i][j]);
+                assertFalse(celdas[i][j]);
             }
         }
     }
@@ -41,7 +41,7 @@ public class TableroTest {
         }
         assertTrue(hayTrue || hayFalse); // Al menos un valor cambiado
     }
-
+    
     @Test
     public void testGetValorCasilleroDentroDeLimites() {
         tablero.setCeldas(new Boolean[][]{

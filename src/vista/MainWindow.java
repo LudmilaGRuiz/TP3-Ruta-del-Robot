@@ -59,7 +59,7 @@ public class MainWindow {
 		
 	}
 
-	public void dibujarTabla(int filas, int columnas, Integer[][] celdas) {
+	public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
 		textField = new JTextField[filas][columnas];
 	    // Si ya había una tabla previa, la removemos
 	    if (panelTablero != null) frame.remove(panelTablero);
@@ -71,7 +71,7 @@ public class MainWindow {
 				textField[i][j] = new JTextField(); // Inicializar el botón
 				textField[i][j].setHorizontalAlignment(JTextField.CENTER);
 	            textField[i][j].setEditable(false);
-	            textField[i][j].setText(celdas[i][j].toString());
+	            textField[i][j].setText(celdas[i][j] ? "1" : "-1");
 				panelTablero.add(textField[i][j]); // Agregar el botón al frame
 			}
 		}

@@ -28,7 +28,7 @@ public class Controlador {
         dibujarTabla(filas,columnas,solver.getCeldas());
     }
 
-    public void dibujarTabla(int filas, int columnas, Integer[][] celdas) {
+    public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
         // Ejecutar crearTabla en un hilo separado para evitar bloquear la interfaz de
         // usuario
         new Thread(new Runnable() {

@@ -35,9 +35,10 @@ public class Solver {
     
     public Robot moverRobotHastaElFinal(Robot robotMov, boolean conPoda) {
         int cantidad = tablero.getColumnas() + tablero.getFilas() - 2;
+        int casillerosRestantes = cantidad + 1 - robotMov.getCantidadDeMovimientos();
         try {
             for (int i = 0; i < cantidad; i++) {
-            	if (conPoda && !siguientePasoEsValido(robotMov.getSumaDeCasilleros(),cantidad+1)) 
+            	if (conPoda && !siguientePasoEsValido(robotMov.getSumaDeCasilleros(),casillerosRestantes)) 
             		return robotMov; 
             	
                 robotMov.movimientoAleatorio();
@@ -49,8 +50,8 @@ public class Solver {
         }
     }
 
-    private boolean siguientePasoEsValido(int sumaDeCargas, int cantCasilleros) {
-    	return -cantCasilleros/2 <= sumaDeCargas &&  sumaDeCargas <= cantCasilleros/2;
+    private boolean siguientePasoEsValido(int sumaDeCargas, int casillerosRestantes) {
+    	return Math.abs(sumaDeCargas) <= casillerosRestantes;
 	}
 
 	public Boolean verificarValidezRobot(Robot robot) {
@@ -64,7 +65,7 @@ public class Solver {
     public Tablero getTablero() {
         return tablero;
     }
-	public Integer[][] getCeldas() {
+	public Boolean[][] getCeldas() {
 		return tablero.getCeldas();
 	}
 
