@@ -43,21 +43,21 @@ public class Controlador {
         }).start();
     }
 
-    public void encontrarCaminoValido(boolean conPoda) {
+    public void encontrarCaminosValidos() {
         // Ejecutar encontrarCaminoValido en un hilo separado
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Long startTime = System.currentTimeMillis();
-                    ArrayList<Boolean> camino = instancias.get(instancias.size() - 1).encontrarCaminoValido(conPoda);
-                    Long endTime = System.currentTimeMillis();
-                    window.pintarTablero(camino, conPoda);
-                    if (conPoda) {
-                        System.out.println("Camino encontrado con poda - Tiempo de ejecución: " + (endTime - startTime) + " ms");
-                    } else {
-                        System.out.println("Camino encontrado sin poda - Tiempo de ejecución: " + (endTime - startTime) + " ms");
-                    }
+                	Instancia instancia = instancias.get(instancias.size() - 1);
+                    Instancia.Resultado resultadoSinPoda =  instancia.encontrarCaminoConResultado(false);
+                    Instancia.Resultado resultadoConPoda =  instancia.encontrarCaminoConResultado(true);
+                    
+                    window.pintarTablero(resultadoSinPoda.camino, false);
+                    window.pintarTablero(resultadoConPoda.camino, true);
+                    window.mostrarResultados(instancia.getFilas(), instancia.getColumnas(), 
+                    						resultadoSinPoda.tiempo, resultadoConPoda.tiempo, 
+                    						resultadoSinPoda.caminosExplorados, resultadoConPoda.caminosExplorados);     
                     window.repintar();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -76,6 +76,9 @@ public class Controlador {
             e.printStackTrace();
             MainWindow.lanzarError("Error al cargar el tablero: " + e.getMessage());
         }
+    }
+    public Tablero getTableroActual() {
+    	return instancias.get(instancias.size() -1 ).getTablero();
     }
 
     public Tablero getTablero(int id) {

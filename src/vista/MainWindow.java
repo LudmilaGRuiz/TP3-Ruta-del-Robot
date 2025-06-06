@@ -7,7 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 import controller.Controlador;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,6 +23,7 @@ public class MainWindow {
 	private JPanel panelTablero;
 	private JScrollPane scrollPaneTablero;
 	private PanelBotones topPanel;
+	private JTable tablaResultados;
 	private FondoConImagen fondoPanel;
 
 	public MainWindow(Controlador controlador) {
@@ -48,6 +52,8 @@ public class MainWindow {
 		 * controlador.crearTablero(29, 30);
 		 * controlador.dibujarTabla();
 		 */
+		tablaResultados = new JTable(new DefaultTableModel(new Object[]{"Tamaño", "Tiempo sin poda (ms)", "Tiempo con poda (ms)", "Caminos explorados"}, 0));
+        frame.add(new JScrollPane(tablaResultados), BorderLayout.SOUTH);
 	}
 
 	public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
@@ -91,6 +97,17 @@ public class MainWindow {
 			}
 		}
 		repintar();
+	}
+	
+	public void mostrarResultados(int filas, int columnas, Long tiempoSinPoda, Long tiempoConPoda, int intentosSinPoda, int intentosConPoda) {
+		DefaultTableModel model = (DefaultTableModel) tablaResultados.getModel();
+        model.setRowCount(0);
+        model.addRow(new Object[]{
+                filas + "x" + columnas,
+                tiempoSinPoda,
+                tiempoConPoda,
+                intentosSinPoda + " / " + intentosConPoda
+        });
 	}
 
 	public void repintar() {

@@ -81,8 +81,7 @@ public class PanelBotones extends JPanel {
 
     private void encontrarCaminoValido() {
 		pintarTableroBlanco();
-		window.getControlador().encontrarCaminoValido(true);
-		window.getControlador().encontrarCaminoValido(false);
+		window.getControlador().encontrarCaminosValidos();
 	}
 
 	private void pintarTableroBlanco() {
