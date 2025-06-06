@@ -15,7 +15,7 @@ public class Robot {
         this.y = 0;
         this.sumaDeCasilleros = ValorCasillero;
         this.movimientos = new ArrayList<Boolean>();
-        this.cantidadDeMovimientos = 0;
+        this.cantidadDeMovimientos = 1;
     }
 
     public void movimientoAleatorio() {

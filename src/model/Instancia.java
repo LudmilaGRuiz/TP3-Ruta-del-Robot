@@ -8,23 +8,27 @@ public class Instancia {
 
     public Instancia(Tablero tablero) {
         this.tablero = tablero;
-        this.contadorIntentos = 0;
     }
 
     public Instancia(int filas, int columnas) {
         this.tablero = new Tablero(filas, columnas);
         this.tablero.tableroAleatorio();
-        this.contadorIntentos = 0;
         System.out.println("Instancia creada con un tablero de " + filas + " filas y " + columnas + " columnas.");
     }
 
-    public ArrayList<Boolean> encontrarCaminoValido(boolean conPoda) {
+    public ArrayList<Boolean> encontrarCaminoValido(boolean conPoda){
+        contadorIntentos = 0;
+        return encontrarCaminoValido(conPoda, contadorIntentos);
+    }
+
+    public ArrayList<Boolean> encontrarCaminoValido(boolean conPoda, int contador) {
+        int contadorIntentos = contador+1;
         Robot robotAux = new Robot(tablero.getValorCasillero(0, 0));
         robotAux = moverRobotHastaElFinal(robotAux, conPoda);
 
         if (verificarValidezRobot(robotAux)) {
             if (robotAux.getSumaDeCasilleros() == 0) {
-                System.out.print(
+                System.out.println(
                         "Camino valido encontrado en " + contadorIntentos + " intentos, con suma de casilleros 0");
                 return robotAux.getMovimientos();
             } else if (contadorIntentos > 5000) {
@@ -32,15 +36,15 @@ public class Instancia {
                 return new ArrayList<Boolean>();
             }
         }
-        contadorIntentos++;
-        return encontrarCaminoValido(conPoda);
+        return encontrarCaminoValido(conPoda, contadorIntentos);
     }
 
     public Robot moverRobotHastaElFinal(Robot robotMov, boolean conPoda) {
         int cantidad = tablero.getColumnas() + tablero.getFilas() - 2;
         try {
             for (int i = 0; i < cantidad; i++) {
-                if (conPoda && !siguientePasoEsValido(robotMov.getSumaDeCasilleros(), cantidad + 1))
+                int casillerosRestantes = cantidad+1 - robotMov.getCantidadDeMovimientos();
+                if (conPoda && !siguientePasoEsValido(robotMov.getSumaDeCasilleros(), casillerosRestantes))
                     return robotMov;
 
                 robotMov.movimientoAleatorio();
@@ -60,10 +64,9 @@ public class Instancia {
         return false;
     }
 
-    private boolean siguientePasoEsValido(int sumaDeCargas, int cantCasilleros) {
-    	return -cantCasilleros/2 <= sumaDeCargas &&  sumaDeCargas <= cantCasilleros/2;
+    private boolean siguientePasoEsValido(int suma, int casillerosRestantes) {
+        return Math.abs(suma) <= casillerosRestantes;
 	}
-
 
     public Tablero getTablero() {
         return tablero;

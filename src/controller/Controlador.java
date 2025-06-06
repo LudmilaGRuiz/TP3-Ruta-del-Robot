@@ -1,5 +1,7 @@
 package controller;
 
+import java.lang.reflect.Array;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import model.Instancia;
@@ -21,9 +23,9 @@ public class Controlador {
     }
 
     public void crearTablero(int filas, int columnas) {
-        if ((filas + columnas) % 2 == 0)
-            MainWindow.lanzarError("Las filas y columnas del tableros no deben ser ambas par o impar");
-
+        if ((filas + columnas) % 2 == 0) {
+            throw new NumberFormatException("Las filas y columnas del tablero no deben ser ambas par o impar");
+        }
         instancias.add(new Instancia(filas, columnas));
     }
 
@@ -33,8 +35,9 @@ public class Controlador {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                window.dibujarTabla(instancias.get(instancias.size()-1).getFilas(), instancias.get(instancias.size()-1).getColumnas(),
-                        instancias.get(instancias.size()-1).getCeldas());
+                window.dibujarTabla(instancias.get(instancias.size() - 1).getFilas(),
+                        instancias.get(instancias.size() - 1).getColumnas(),
+                        instancias.get(instancias.size() - 1).getCeldas());
                 window.repintar();
             }
         }).start();
@@ -46,23 +49,21 @@ public class Controlador {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(10); // Esperar un segundo antes de buscar el camino
-                    window.pintarTablero(instancias.get(instancias.size()-1).encontrarCaminoValido(conPoda));
+                    Long startTime = System.currentTimeMillis();
+                    ArrayList<Boolean> camino = instancias.get(instancias.size() - 1).encontrarCaminoValido(conPoda);
+                    Long endTime = System.currentTimeMillis();
+                    window.pintarTablero(camino, conPoda);
+                    if (conPoda) {
+                        System.out.println("Camino encontrado con poda - Tiempo de ejecución: " + (endTime - startTime) + " ms");
+                    } else {
+                        System.out.println("Camino encontrado sin poda - Tiempo de ejecución: " + (endTime - startTime) + " ms");
+                    }
                     window.repintar();
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
-    }
-
-    public void guardarTablero() {
-        try {
-            JsonManager.guardarTablero(instancias.get(0).getTablero(), "TablerosPredeterminados/tablero.json");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainWindow.lanzarError("Error al guardar el tablero: " + e.getMessage());
-        }
     }
 
     public void cargarTablero(String ruta) {
@@ -70,6 +71,7 @@ public class Controlador {
             Tablero tablero = JsonManager.cargarTablero(ruta);
             instancias.add(new Instancia(tablero));
             this.window.dibujarTabla(tablero.getFilas(), tablero.getColumnas(), tablero.getCeldas());
+            this.window.repintar();
         } catch (Exception e) {
             e.printStackTrace();
             MainWindow.lanzarError("Error al cargar el tablero: " + e.getMessage());

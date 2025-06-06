@@ -1,11 +1,8 @@
 package vista;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,6 +19,8 @@ public class MainWindow {
 	private JTextField[][] textField;
 	private JPanel panelTablero;
 	private JScrollPane scrollPaneTablero;
+	private PanelBotones topPanel;
+	private FondoConImagen fondoPanel;
 
 	public MainWindow(Controlador controlador) {
 		this.controlador = controlador;
@@ -32,77 +31,40 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-	    frame = new JFrame();
-	    frame.setSize(1000, 800);
+		frame = new JFrame();
+		frame.setSize(1000, 800);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-        JButton btnCargarTablero = new JButton("Seleccionar tablero");
-		JButton btnCrearTablero = new JButton("Crear tablero");
-        JButton btnResolver = new JButton("Resolver");
+		frame.setTitle("Buscador de caminos en un tablero");
+		frame.setLocationRelativeTo(null);
+		frame.setBackground(Color.red);
 
-        JPanel topPanel = new JPanel();
-        topPanel.add(btnCargarTablero);
-		topPanel.add(btnCrearTablero);
-        topPanel.add(btnResolver);
+		topPanel = new PanelBotones(this);
+		fondoPanel = new FondoConImagen("homer.png");
+		frame.add(topPanel, BorderLayout.NORTH);
+		frame.add(fondoPanel, BorderLayout.CENTER);
 
-//        btnCargarTablero.addActionListener(this::seleccionarTablero);
-        btnResolver.addActionListener(this::encontrarCaminoValido);
-        
-		btnCargarTablero.addActionListener(e -> {
-			JFileChooser fileChooser = new JFileChooser("TablerosPredeterminados/");
-			fileChooser.setDialogTitle("Seleccionar tablero");
-			
-			int userSelection = fileChooser.showOpenDialog(frame);
-			if (userSelection == JFileChooser.APPROVE_OPTION) {
-			File archivoSeleccionado = fileChooser.getSelectedFile();
-			String rutaArchivo = archivoSeleccionado.getAbsolutePath();
-			try {
-				controlador.cargarTablero(rutaArchivo);
-			} catch (Exception ex) {
-				lanzarError("Error al cargar el grafo: " + ex.getMessage());
-			}
-		}});
-
-        frame.add(topPanel, BorderLayout.NORTH);
-        
-		JButton btnResultados = new JButton("Resultados");
-		btnResultados.addActionListener(e -> controlador.guardarTablero());
-		btnCrearTablero.addActionListener(e -> {
-			String filasStr = JOptionPane.showInputDialog(frame, "Ingrese el número de filas:");
-			String columnasStr = JOptionPane.showInputDialog(frame, "Ingrese el número de columnas:");
-			if (filasStr != null && columnasStr != null) {
-				try {
-					int filas = Integer.parseInt(filasStr);
-					int columnas = Integer.parseInt(columnasStr);
-					controlador.crearTablero(filas, columnas);
-					controlador.dibujarTabla();
-				} catch (NumberFormatException ex) {
-					lanzarError("Por favor, ingrese números válidos.");
-				}
-			}
-		});
-		
-		frame.add(btnResultados, BorderLayout.SOUTH);
-        
-/* 		controlador.crearTablero(29, 30);
-		controlador.dibujarTabla(); */
+		/*
+		 * controlador.crearTablero(29, 30);
+		 * controlador.dibujarTabla();
+		 */
 	}
 
 	public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
 		textField = new JTextField[filas][columnas];
-	    // Si ya había una tabla previa, la removemos
-	    if (panelTablero != null && scrollPaneTablero != null) {
-	        frame.remove(scrollPaneTablero);
-	    }
-	    panelTablero = new JPanel(new GridLayout(filas, columnas, 2, 2));
-	    
+		// Si ya había una tabla previa, la removemos
+		frame.remove(fondoPanel);
+		if (panelTablero != null && scrollPaneTablero != null) {
+			frame.remove(scrollPaneTablero);
+		}
+		panelTablero = new JPanel(new GridLayout(filas, columnas, 2, 2));
+
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				textField[i][j] = new JTextField(); // Inicializar el botón
 				textField[i][j].setHorizontalAlignment(JTextField.CENTER);
-	            textField[i][j].setEditable(false);
-	            textField[i][j].setText(celdas[i][j] ? "1" : "-1");
+				textField[i][j].setEditable(false);
+				textField[i][j].setText(celdas[i][j] ? "1" : "-1");
 				panelTablero.add(textField[i][j]); // Agregar el botón al frame
 			}
 		}
@@ -111,29 +73,22 @@ public class MainWindow {
 		repintar();
 	}
 
-	private void encontrarCaminoValido(ActionEvent e) {
-		pintarTableroBlanco();
-		controlador.encontrarCaminoValido(true);
-	}
-
-	private void pintarTableroBlanco() {
-		for (int i = 0; i < textField.length; i++) {
-			for (int j = 0; j < textField[i].length; j++) {
-				textField[i][j].setBackground(Color.WHITE); // Pintar de blanco
-			}
-		}
-		repintar();
-	}
-
-	public void pintarTablero(ArrayList<Boolean> movimientos) {
+	public void pintarTablero(ArrayList<Boolean> movimientos, boolean conPoda) {
 		int x = 0, y = 0;
-		textField[x][y].setBackground(Color.GREEN); // Pintar de verde primer casillero
+		textField[x][y].setBackground(Color.YELLOW); // Pintar primera celda de amarillo
+
 		for (Boolean movimiento : movimientos) {
 			if (movimiento)
 				y++; // Movimiento a la derecha
-			else 
+			else
 				x++; // Movimiento hacia abajo
-			textField[x][y].setBackground(Color.GREEN); // Pintar de verde
+			if (conPoda && textField[x][y].getBackground() == Color.WHITE) {
+				textField[x][y].setBackground(Color.GREEN); // Pintar de verde primer casillero
+			} else if (textField[x][y].getBackground() == Color.WHITE){
+				textField[x][y].setBackground(Color.RED); // Pintar de rojo primer casillero
+			}else {
+				textField[x][y].setBackground(Color.YELLOW); // Pintar de amarillo los demás casilleros
+			}
 		}
 		repintar();
 	}
@@ -150,11 +105,20 @@ public class MainWindow {
 				"Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
+
 	public JFrame getFrame() {
 		return frame;
 	}
 
 	public JPanel getPanelTablero() {
 		return panelTablero;
+	}
+
+	public Controlador getControlador() {
+		return controlador;
+	}
+
+	public JTextField[][] getTextField() {
+		return textField;
 	}
 }
