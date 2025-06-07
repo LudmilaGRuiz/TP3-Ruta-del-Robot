@@ -70,8 +70,8 @@ public class Controlador {
         try {
             Tablero tablero = JsonManager.cargarTablero(ruta);
             instancias.add(new Instancia(tablero));
-            this.window.dibujarTabla(tablero.getFilas(), tablero.getColumnas(), tablero.getCeldas());
-            this.window.repintar();
+            dibujarTabla();
+            window.repintar();
         } catch (Exception e) {
             e.printStackTrace();
             MainWindow.lanzarError("Error al cargar el tablero: " + e.getMessage());
