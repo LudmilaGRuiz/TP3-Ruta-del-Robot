@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import controller.Controlador;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 
 public class MainWindow {
 
@@ -52,8 +53,14 @@ public class MainWindow {
 		 * controlador.crearTablero(29, 30);
 		 * controlador.dibujarTabla();
 		 */
-		tablaResultados = new JTable(new DefaultTableModel(new Object[]{"Tamaño", "Tiempo sin poda (ms)", "Tiempo con poda (ms)", "Caminos explorados"}, 0));
-        frame.add(new JScrollPane(tablaResultados), BorderLayout.SOUTH);
+		tablaResultados = new JTable(new DefaultTableModel(
+				new Object[] { "Tamaño", "Tiempo sin poda (ms)", "Tiempo con poda (ms)", "Caminos explorados" }, 0));
+		JPanel panelTablaResultados = new JPanel(new BorderLayout());
+		panelTablaResultados.setPreferredSize(new Dimension(1000, 150)); // Limita la altura de la tabla
+		panelTablaResultados.add(new JScrollPane(tablaResultados));
+
+		frame.add(panelTablaResultados, BorderLayout.SOUTH);
+
 	}
 
 	public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
@@ -74,8 +81,15 @@ public class MainWindow {
 				panelTablero.add(textField[i][j]); // Agregar el botón al frame
 			}
 		}
+		// Crear contenedor y asignarle tamaño preferido
+		JPanel panelContenedor = new JPanel(new BorderLayout());
+		panelContenedor.setMinimumSize(new Dimension(900, 600));
+		panelContenedor.setMaximumSize(new Dimension(1000, 700));
+
 		scrollPaneTablero = new JScrollPane(panelTablero);
-		frame.add(scrollPaneTablero, BorderLayout.CENTER);
+		panelContenedor.add(scrollPaneTablero, BorderLayout.CENTER);
+
+		frame.add(panelContenedor, BorderLayout.CENTER);
 		repintar();
 	}
 
@@ -90,24 +104,25 @@ public class MainWindow {
 				x++; // Movimiento hacia abajo
 			if (conPoda && textField[x][y].getBackground() == Color.WHITE) {
 				textField[x][y].setBackground(Color.GREEN); // Pintar de verde primer casillero
-			} else if (textField[x][y].getBackground() == Color.WHITE){
+			} else if (textField[x][y].getBackground() == Color.WHITE) {
 				textField[x][y].setBackground(Color.RED); // Pintar de rojo primer casillero
-			}else {
+			} else {
 				textField[x][y].setBackground(Color.YELLOW); // Pintar de amarillo los demás casilleros
 			}
 		}
 		repintar();
 	}
-	
-	public void mostrarResultados(int filas, int columnas, Long tiempoSinPoda, Long tiempoConPoda, int intentosSinPoda, int intentosConPoda) {
+
+	public void mostrarResultados(int filas, int columnas, Long tiempoSinPoda, Long tiempoConPoda, int intentosSinPoda,
+			int intentosConPoda) {
 		DefaultTableModel model = (DefaultTableModel) tablaResultados.getModel();
-        model.setRowCount(0);
-        model.addRow(new Object[]{
-                filas + "x" + columnas,
-                tiempoSinPoda,
-                tiempoConPoda,
-                intentosSinPoda + " / " + intentosConPoda
-        });
+		model.setRowCount(0);
+		model.addRow(new Object[] {
+				filas + "x" + columnas,
+				tiempoSinPoda,
+				tiempoConPoda,
+				intentosSinPoda + " / " + intentosConPoda
+		});
 	}
 
 	public void repintar() {
