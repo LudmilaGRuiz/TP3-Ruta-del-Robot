@@ -55,6 +55,7 @@ public class MainWindow {
 		 */
 		tablaResultados = new JTable(new DefaultTableModel(
 				new Object[] { "Tamaño", "Tiempo sin poda (ms)", "Tiempo con poda (ms)", "Caminos explorados" }, 0));
+		tablaResultados.setEnabled(false);
 		JPanel panelTablaResultados = new JPanel(new BorderLayout());
 		panelTablaResultados.setPreferredSize(new Dimension(1000, 150)); // Limita la altura de la tabla
 		panelTablaResultados.add(new JScrollPane(tablaResultados));
@@ -116,13 +117,15 @@ public class MainWindow {
 	public void mostrarResultados(int filas, int columnas, Long tiempoSinPoda, Long tiempoConPoda, int intentosSinPoda,
 			int intentosConPoda) {
 		DefaultTableModel model = (DefaultTableModel) tablaResultados.getModel();
-		model.setRowCount(0);
-		model.addRow(new Object[] {
+//		model.setRowCount(0);
+		Object[] datos = new Object[] {
 				filas + "x" + columnas,
 				tiempoSinPoda,
 				tiempoConPoda,
 				intentosSinPoda + " / " + intentosConPoda
-		});
+		};
+		model.addRow(datos);
+		
 	}
 
 	public void repintar() {
