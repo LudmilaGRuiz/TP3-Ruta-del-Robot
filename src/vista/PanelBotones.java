@@ -13,8 +13,8 @@ public class PanelBotones extends JPanel {
     private JButton btnCargarTablero;
     private JButton btnCrearTablero;
     private JButton btnResolver;
-    private JButton btnResultados;
     private JButton btnStressTest;
+    private JButton btnLimpiarTablero; 
     private MainWindow window;
 
     public PanelBotones(MainWindow windowM) {
@@ -22,20 +22,17 @@ public class PanelBotones extends JPanel {
         btnCargarTablero = new JButton("Seleccionar tablero");
         btnCrearTablero = new JButton("Crear tablero");
         btnResolver = new JButton("Resolver");
-        btnResultados = new JButton("Resultados");
         btnStressTest = new JButton("Stress Test");
+        btnLimpiarTablero = new JButton("Limpiar tablero");
         //this.setForeground(Color.TRANSLUCENT);
         this.add(btnCargarTablero);
         this.add(btnCrearTablero);
         this.add(btnStressTest);
         this.add(btnResolver);
-        this.add(btnResultados);
+        this.add(btnLimpiarTablero);
+        
 
         btnStressTest.addActionListener((ActionEvent e) -> {
-			MainWindow.lanzarError("No hace nada por ahora");
-		});
-
-        btnResultados.addActionListener((ActionEvent e) -> {
 			MainWindow.lanzarError("No hace nada por ahora");
 		});
 
@@ -77,7 +74,18 @@ public class PanelBotones extends JPanel {
                 encontrarCaminoValido();
             }
         });
+        btnLimpiarTablero.addActionListener(e -> {
+            if (window.getTextField() == null || window.getTextField().length == 0) {
+                MainWindow.lanzarError("Debe crear o cargar un tablero primero.");
+            } else {
+                pintarTableroBlanco();
+            }
+        });
+
+
+
     }
+    
 
     private void encontrarCaminoValido() {
 		pintarTableroBlanco();
