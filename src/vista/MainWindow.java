@@ -26,6 +26,7 @@ public class MainWindow {
 	private PanelBotones topPanel;
 	private JTable tablaResultados;
 	private FondoConImagen fondoPanel;
+	private JPanel panelContenedor;
 
 	public MainWindow(Controlador controlador) {
 		this.controlador = controlador;
@@ -69,7 +70,7 @@ public class MainWindow {
 		// Si ya había una tabla previa, la removemos
 		frame.remove(fondoPanel);
 		if (panelTablero != null && scrollPaneTablero != null) {
-			frame.remove(scrollPaneTablero);
+			frame.remove(panelContenedor);
 		}
 		panelTablero = new JPanel(new GridLayout(filas, columnas, 2, 2));
 
@@ -83,7 +84,7 @@ public class MainWindow {
 			}
 		}
 		// Crear contenedor y asignarle tamaño preferido
-		JPanel panelContenedor = new JPanel(new BorderLayout());
+		panelContenedor = new JPanel(new BorderLayout());
 		panelContenedor.setMinimumSize(new Dimension(900, 600));
 		panelContenedor.setMaximumSize(new Dimension(1000, 700));
 
