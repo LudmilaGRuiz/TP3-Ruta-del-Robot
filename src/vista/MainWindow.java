@@ -11,6 +11,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+
 import controller.Controlador;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,6 +32,7 @@ public class MainWindow {
 	private JTable tablaResultados;
 	private FondoConImagen fondoPanel;
 	private JPanel panelContenedor;
+	private ChartPanel chartPanel;
 
 	public MainWindow(Controlador controlador) {
 		this.controlador = controlador;
@@ -62,13 +68,34 @@ public class MainWindow {
 		panelTablaResultados.add(new JScrollPane(tablaResultados));
 
 		frame.add(panelTablaResultados, BorderLayout.SOUTH);
+	}
 
+	public void stressTest() {
+		// Elimina cualquier gráfico anterior
+		frame.remove(fondoPanel);
+		if (chartPanel != null) {
+			frame.remove(chartPanel);
+		}
+		if (panelContenedor != null) {
+			frame.remove(panelContenedor);
+		}
+
+		JFreeChart chart = ChartFactory.createLineChart(
+				"Comparación de intentos con y sin poda",
+				"Instancia",
+				"Intentos",
+				controlador.dataGrafico(),
+				PlotOrientation.VERTICAL, true, false, false);
+		chartPanel = new ChartPanel(chart);
+		frame.add(chartPanel, BorderLayout.CENTER);
+		repintar();
 	}
 
 	public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
 		textField = new JTextField[filas][columnas];
 		// Si ya había una tabla previa, la removemos
 		frame.remove(fondoPanel);
+		frame.remove(chartPanel);
 		if (panelTablero != null && scrollPaneTablero != null) {
 			frame.remove(panelContenedor);
 		}
@@ -118,7 +145,7 @@ public class MainWindow {
 	public void mostrarResultados(int filas, int columnas, Long tiempoSinPoda, Long tiempoConPoda, int intentosSinPoda,
 			int intentosConPoda) {
 		DefaultTableModel model = (DefaultTableModel) tablaResultados.getModel();
-//		model.setRowCount(0);
+		// model.setRowCount(0);
 		Object[] datos = new Object[] {
 				filas + "x" + columnas,
 				tiempoSinPoda,
@@ -126,7 +153,7 @@ public class MainWindow {
 				intentosSinPoda + " / " + intentosConPoda
 		};
 		model.addRow(datos);
-		
+
 	}
 
 	public void repintar() {

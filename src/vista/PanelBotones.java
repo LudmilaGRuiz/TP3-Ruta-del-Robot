@@ -14,7 +14,7 @@ public class PanelBotones extends JPanel {
     private JButton btnCrearTablero;
     private JButton btnResolver;
     private JButton btnStressTest;
-    private JButton btnLimpiarTablero; 
+    private JButton btnLimpiarTablero;
     private MainWindow window;
 
     public PanelBotones(MainWindow windowM) {
@@ -24,17 +24,16 @@ public class PanelBotones extends JPanel {
         btnResolver = new JButton("Resolver");
         btnStressTest = new JButton("Stress Test");
         btnLimpiarTablero = new JButton("Limpiar tablero");
-        //this.setForeground(Color.TRANSLUCENT);
+        // this.setForeground(Color.TRANSLUCENT);
         this.add(btnCargarTablero);
         this.add(btnCrearTablero);
         this.add(btnStressTest);
         this.add(btnResolver);
         this.add(btnLimpiarTablero);
-        
 
         btnStressTest.addActionListener((ActionEvent e) -> {
-			MainWindow.lanzarError("No hace nada por ahora");
-		});
+            window.stressTest();
+        });
 
         btnCargarTablero.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser("TablerosPredeterminados/");
@@ -82,23 +81,20 @@ public class PanelBotones extends JPanel {
             }
         });
 
-
-
     }
-    
 
     private void encontrarCaminoValido() {
-		pintarTableroBlanco();
-		window.getControlador().encontrarCaminosValidos();
-	}
+        pintarTableroBlanco();
+        window.getControlador().encontrarCaminosValidos();
+    }
 
-	private void pintarTableroBlanco() {
-		for (int i = 0; i < window.getTextField().length; i++) {
-			for (int j = 0; j < window.getTextField()[i].length; j++) {
-				window.getTextField()[i][j].setBackground(Color.WHITE); // Pintar de blanco
-			}
-		}
-		window.repintar();
-	}
+    private void pintarTableroBlanco() {
+        for (int i = 0; i < window.getTextField().length; i++) {
+            for (int j = 0; j < window.getTextField()[i].length; j++) {
+                window.getTextField()[i][j].setBackground(Color.WHITE); // Pintar de blanco
+            }
+        }
+        window.repintar();
+    }
 
 }

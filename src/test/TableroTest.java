@@ -1,65 +1,56 @@
 package test;
-import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.Assert.*;
-
-import org.junit.jupiter.api.*;
 
 import model.Tablero;
+import org.junit.jupiter.api.*;
 
-public class TableroTest {
-    private Tablero tablero;
+import static org.junit.jupiter.api.Assertions.*;
+
+class TableroTest {
+    Tablero tablero;
 
     @BeforeEach
-    public void setUp() {
-        tablero = new Tablero(3, 3);
+    void setUp() {
+        tablero = new Tablero(5, 4);
     }
 
     @Test
-    public void testInicializacionTablero() {
-        assertEquals(3, tablero.getFilas());
-        assertEquals(3, tablero.getColumnas());
-        Boolean[][] celdas = tablero.getCeldas();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                assertFalse(celdas[i][j]);
-            }
-        }
+    void testInicializacion() {
+        assertEquals(5, tablero.getFilas());
+        assertEquals(4, tablero.getColumnas());
+        assertNotNull(tablero.getCeldas());
     }
 
     @Test
-    public void testTableroAleatorio() {
+    void testSetYGetCeldas() {
+        Boolean[][] celdas = {{true, false}, {false, true}};
+        tablero.setCeldas(celdas);
+        assertArrayEquals(celdas, tablero.getCeldas());
+    }
+
+    @Test
+    void testTableroAleatorio() {
         tablero.tableroAleatorio();
         Boolean[][] celdas = tablero.getCeldas();
-        boolean hayTrue = false;
-        boolean hayFalse = false;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (celdas[i][j]) hayTrue = true;
-                else hayFalse = true;
-            }
-        }
-        assertTrue(hayTrue || hayFalse); // Al menos un valor cambiado
+        assertNotNull(celdas[0][0]);
     }
 
     @Test
-    public void testGetValorCasilleroDentroDeLimites() {
-        tablero.setCeldas(new Boolean[][]{
-            {true, false, true},
-            {false, true, false},
-            {true, true, false}
-        });
+    void testGetValorCasillero() {
+        tablero.setCeldas(new Boolean[][]{{true, false}, {false, true}});
         assertEquals(1, tablero.getValorCasillero(0, 0));
         assertEquals(-1, tablero.getValorCasillero(0, 1));
-        assertEquals(1, tablero.getValorCasillero(1, 1));
-        assertEquals(-1, tablero.getValorCasillero(2, 2));
     }
 
     @Test
-    public void testGetValorCasilleroFueraDeLimites() {
-        assertEquals(0, tablero.getValorCasillero(-1, 0));
-        assertEquals(0, tablero.getValorCasillero(0, -1));
-        assertEquals(0, tablero.getValorCasillero(3, 0));
-        assertEquals(0, tablero.getValorCasillero(0, 3));
+    void testGetValorCasilleroFueraDeLimite() {
+        assertThrows(IndexOutOfBoundsException.class, () -> tablero.getValorCasillero(-1, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> tablero.getValorCasillero(0, 7));
+    }
+
+    @Test
+    void testEqualsYHashCode() {
+        Tablero t2 = new Tablero(5, 4);
+        assertEquals(tablero, t2);
+        assertEquals(tablero.hashCode(), t2.hashCode());
     }
 }

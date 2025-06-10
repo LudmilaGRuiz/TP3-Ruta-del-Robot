@@ -21,11 +21,6 @@ public class Instancia {
         Long startTime = System.currentTimeMillis();
         ArrayList<Boolean> camino = encontrarCaminoValido(conPoda);
         Long endTime = System.currentTimeMillis();
-        if (conPoda) {
-            System.out.println("Camino encontrado con poda - Tiempo de ejecucion: " + (endTime - startTime) + " ms");
-        } else {
-            System.out.println("Camino encontrado sin poda - Tiempo de ejecucion: " + (endTime - startTime) + " ms");
-        }
 		return new Resultado(camino, (endTime-startTime) , contadorIntentos);
     }
 
@@ -36,11 +31,8 @@ public class Instancia {
 
         if (verificarValidezRobot(robotAux)) {
             if (robotAux.getSumaDeCasilleros() == 0) {
-                System.out.println(
-                        "Camino valido encontrado en " + contadorIntentos + " intentos, con suma de casilleros 0");
                 return robotAux.getMovimientos();
             } else if (contadorIntentos > 5000) {
-                System.out.println("No se encontro un camino valido en " + contadorIntentos + " intentos");
                 return new ArrayList<Boolean>();
             }
         }

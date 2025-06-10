@@ -1,8 +1,8 @@
 package controller;
 
-import java.lang.reflect.Array;
-import java.sql.Time;
 import java.util.ArrayList;
+
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import model.Instancia;
 import model.Tablero;
@@ -30,8 +30,6 @@ public class Controlador {
     }
 
     public void dibujarTabla() {
-        // Ejecutar crearTabla en un hilo separado para evitar bloquear la interfaz de
-        // usuario
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -49,15 +47,15 @@ public class Controlador {
             @Override
             public void run() {
                 try {
-                	Instancia instancia = instancias.get(instancias.size() - 1);
-                    Instancia.Resultado resultadoSinPoda =  instancia.encontrarCaminoConResultado(false);
-                    Instancia.Resultado resultadoConPoda =  instancia.encontrarCaminoConResultado(true);
-                    
+                    Instancia instancia = instancias.get(instancias.size() - 1);
+                    Instancia.Resultado resultadoSinPoda = instancia.encontrarCaminoConResultado(false);
+                    Instancia.Resultado resultadoConPoda = instancia.encontrarCaminoConResultado(true);
+
                     window.pintarTablero(resultadoSinPoda.camino, false);
                     window.pintarTablero(resultadoConPoda.camino, true);
-                    window.mostrarResultados(instancia.getFilas(), instancia.getColumnas(), 
-                    						resultadoSinPoda.tiempo, resultadoConPoda.tiempo, 
-                    						resultadoSinPoda.caminosExplorados, resultadoConPoda.caminosExplorados);     
+                    window.mostrarResultados(instancia.getFilas(), instancia.getColumnas(),
+                            resultadoSinPoda.tiempo, resultadoConPoda.tiempo,
+                            resultadoSinPoda.caminosExplorados, resultadoConPoda.caminosExplorados);
                     window.repintar();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -77,8 +75,31 @@ public class Controlador {
             MainWindow.lanzarError("Error al cargar el tablero: " + e.getMessage());
         }
     }
+
+    public DefaultCategoryDataset dataGrafico() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        int filas = 5;
+        int columnas = 6;
+
+        for (int i = 0; i < 30; i++) {
+            filas++;
+            columnas++;
+            Instancia instancia = new Instancia(filas, columnas);
+            Instancia.Resultado resultadoSinPoda = instancia.encontrarCaminoConResultado(false);
+            Instancia.Resultado resultadoConPoda = instancia.encontrarCaminoConResultado(true);
+
+            dataset.addValue(resultadoSinPoda.caminosExplorados, "Sin poda", String.valueOf(i));
+            dataset.addValue(resultadoConPoda.caminosExplorados, "Con poda", String.valueOf(i));
+
+            window.mostrarResultados(instancia.getFilas(), instancia.getColumnas(),
+                    resultadoSinPoda.tiempo, resultadoConPoda.tiempo,
+                    resultadoSinPoda.caminosExplorados, resultadoConPoda.caminosExplorados);
+        }
+        return dataset;
+    }
+
     public Tablero getTableroActual() {
-    	return instancias.get(instancias.size() -1 ).getTablero();
+        return instancias.get(instancias.size() - 1).getTablero();
     }
 
     public Tablero getTablero(int id) {
