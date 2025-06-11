@@ -12,6 +12,13 @@ public class Tablero {
         this.columnas = columnas;
         this.celdas = new Boolean[filas][columnas];
     }
+    public Boolean[][] getCeldas() {
+        return celdas;
+    }
+
+    public void setCeldas(Boolean[][] celdas) {
+        this.celdas = celdas;
+    }
 
     public void tableroAleatorio() {
         Random random = new Random();
@@ -21,6 +28,7 @@ public class Tablero {
             }
         }
     }
+    
 
     public int getValorCasillero(int x, int y) {
         if (x < 0 || x >= filas || y < 0 || y >= columnas) {
@@ -28,13 +36,7 @@ public class Tablero {
         }
         return celdas[x][y] ? 1 : -1;
     }
-    public Boolean[][] getCeldas() {
-        return celdas;
-    }
-
-    public void setCeldas(Boolean[][] celdas) {
-        this.celdas = celdas;
-    }
+    
 
     public int getFilas() {
         return filas;
