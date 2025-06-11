@@ -8,7 +8,7 @@ import model.Instancia;
 import model.Tablero;
 import utilidades.JsonManager;
 import vista.MainWindow;
-
+ 
 public class Controlador {
     private ArrayList<Instancia> instancias;
     private MainWindow window;

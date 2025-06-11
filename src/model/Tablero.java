@@ -13,14 +13,6 @@ public class Tablero {
         this.celdas = new Boolean[filas][columnas];
     }
 
-    public Boolean[][] getCeldas() {
-        return celdas;
-    }
-
-    public void setCeldas(Boolean[][] celdas) {
-        this.celdas = celdas;
-    }
-
     public void tableroAleatorio() {
         Random random = new Random();
         for (int i = 0; i < filas; i++) {
@@ -35,6 +27,13 @@ public class Tablero {
             throw new IndexOutOfBoundsException("Índices fuera de los límites del tablero.");
         }
         return celdas[x][y] ? 1 : -1;
+    }
+    public Boolean[][] getCeldas() {
+        return celdas;
+    }
+
+    public void setCeldas(Boolean[][] celdas) {
+        this.celdas = celdas;
     }
 
     public int getFilas() {
