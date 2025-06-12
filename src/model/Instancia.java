@@ -13,7 +13,6 @@ public class Instancia {
     public Instancia(int filas, int columnas) {
         this.tablero = new Tablero(filas, columnas);
         this.tablero.tableroAleatorio();
-        System.out.println("Instancia creada con un tablero de " + filas + " filas y " + columnas + " columnas.");
     }
 
     public Resultado encontrarCaminoConResultado(boolean conPoda){
