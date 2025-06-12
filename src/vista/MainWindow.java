@@ -25,13 +25,11 @@ public class MainWindow {
 
 	public JFrame frame;
 	private Controlador controlador;
-	private JTextField[][] textField;
-	private JPanel panelTablero;
-	private JScrollPane scrollPaneTablero;
-	private PanelBotones topPanel;
-	private JTable tablaResultados;
 	private FondoConImagen fondoPanel;
+	private PanelBotones topPanelBotones;
+	private JTextField[][] tablero;
 	private JPanel panelContenedor;
+	private JTable tablaResultados;
 	private ChartPanel chartPanel;
 
 	public MainWindow(Controlador controlador) {
@@ -51,9 +49,9 @@ public class MainWindow {
 		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.red);
 
-		topPanel = new PanelBotones(this);
+		topPanelBotones = new PanelBotones(this);
 		fondoPanel = new FondoConImagen("homer.png");
-		frame.add(topPanel, BorderLayout.NORTH);
+		frame.add(topPanelBotones, BorderLayout.NORTH);
 		frame.add(fondoPanel, BorderLayout.CENTER);
 
 		/*
@@ -92,22 +90,18 @@ public class MainWindow {
 	}
 
 	public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
-		textField = new JTextField[filas][columnas];
+		tablero = new JTextField[filas][columnas];
 		// Si ya había una tabla previa, la removemos
-		frame.remove(fondoPanel);
-		frame.remove(chartPanel);
-		if (panelTablero != null && scrollPaneTablero != null) {
-			frame.remove(panelContenedor);
-		}
-		panelTablero = new JPanel(new GridLayout(filas, columnas, 2, 2));
+		verificarComponentes();
+		JPanel panelTablero = new JPanel(new GridLayout(filas, columnas, 2, 2));
 
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
-				textField[i][j] = new JTextField(); // Inicializar el botón
-				textField[i][j].setHorizontalAlignment(JTextField.CENTER);
-				textField[i][j].setEditable(false);
-				textField[i][j].setText(celdas[i][j] ? "1" : "-1");
-				panelTablero.add(textField[i][j]); // Agregar el botón al frame
+				tablero[i][j] = new JTextField(); // Inicializar el botón
+				tablero[i][j].setHorizontalAlignment(JTextField.CENTER);
+				tablero[i][j].setEditable(false);
+				tablero[i][j].setText(celdas[i][j] ? "1" : "-1");
+				panelTablero.add(tablero[i][j]); // Agregar el botón al frame
 			}
 		}
 		// Crear contenedor y asignarle tamaño preferido
@@ -115,28 +109,34 @@ public class MainWindow {
 		panelContenedor.setMinimumSize(new Dimension(900, 600));
 		panelContenedor.setMaximumSize(new Dimension(1000, 700));
 
-		scrollPaneTablero = new JScrollPane(panelTablero);
+		JScrollPane scrollPaneTablero = new JScrollPane(panelTablero);
 		panelContenedor.add(scrollPaneTablero, BorderLayout.CENTER);
 
 		frame.add(panelContenedor, BorderLayout.CENTER);
 		repintar();
 	}
 
+	private void verificarComponentes() {
+		frame.remove(fondoPanel);
+		if (chartPanel != null) frame.remove(chartPanel);
+		if (panelContenedor != null) frame.remove(panelContenedor);
+	}
+
 	public void pintarTablero(ArrayList<Boolean> movimientos, boolean conPoda) {
 		int x = 0, y = 0;
-		textField[x][y].setBackground(Color.YELLOW); // Pintar primera celda de amarillo
+		tablero[x][y].setBackground(Color.YELLOW); // Pintar primera celda de amarillo
 
 		for (Boolean movimiento : movimientos) {
 			if (movimiento)
 				y++; // Movimiento a la derecha
 			else
 				x++; // Movimiento hacia abajo
-			if (conPoda && textField[x][y].getBackground() == Color.WHITE) {
-				textField[x][y].setBackground(Color.GREEN); // Pintar de verde primer casillero
-			} else if (textField[x][y].getBackground() == Color.WHITE) {
-				textField[x][y].setBackground(Color.RED); // Pintar de rojo primer casillero
+			if (conPoda && tablero[x][y].getBackground() == Color.WHITE) {
+				tablero[x][y].setBackground(Color.GREEN); // Pintar de verde primer casillero
+			} else if (tablero[x][y].getBackground() == Color.WHITE) {
+				tablero[x][y].setBackground(Color.RED); // Pintar de rojo primer casillero
 			} else {
-				textField[x][y].setBackground(Color.YELLOW); // Pintar de amarillo los demás casilleros
+				tablero[x][y].setBackground(Color.YELLOW); // Pintar de amarillo los demás casilleros
 			}
 		}
 		repintar();
@@ -173,15 +173,11 @@ public class MainWindow {
 		return frame;
 	}
 
-	public JPanel getPanelTablero() {
-		return panelTablero;
-	}
-
 	public Controlador getControlador() {
 		return controlador;
 	}
 
 	public JTextField[][] getTextField() {
-		return textField;
+		return tablero;
 	}
 }
