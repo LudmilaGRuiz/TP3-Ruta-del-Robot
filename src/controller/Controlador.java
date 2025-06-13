@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import model.Instancia;
+import model.Resultado;
 import model.Tablero;
 import utilidades.JsonManager;
 import vista.MainWindow;
@@ -42,14 +43,13 @@ public class Controlador {
     }
 
     public void encontrarCaminosValidos() {
-        // Ejecutar encontrarCaminoValido en un hilo separado
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Instancia instancia = instancias.get(instancias.size() - 1);
-                    Instancia.Resultado resultadoSinPoda = instancia.encontrarCaminoConResultado(false);
-                    Instancia.Resultado resultadoConPoda = instancia.encontrarCaminoConResultado(true);
+                    Resultado resultadoSinPoda = instancia.encontrarCaminoConResultado(false);
+                    Resultado resultadoConPoda = instancia.encontrarCaminoConResultado(true);
 
                     window.pintarTablero(resultadoSinPoda.camino, false);
                     window.pintarTablero(resultadoConPoda.camino, true);
@@ -76,17 +76,17 @@ public class Controlador {
         }
     }
 
-    public DefaultCategoryDataset dataGrafico() {
+    public DefaultCategoryDataset dataGraficoStress() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        int filas = 5;
-        int columnas = 6;
+        int filas = 10;
+        int columnas = 9;
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 100; i++) {
             filas++;
             columnas++;
             Instancia instancia = new Instancia(filas, columnas);
-            Instancia.Resultado resultadoSinPoda = instancia.encontrarCaminoConResultado(false);
-            Instancia.Resultado resultadoConPoda = instancia.encontrarCaminoConResultado(true);
+            Resultado resultadoSinPoda = instancia.encontrarCaminoConResultado(false);
+            Resultado resultadoConPoda = instancia.encontrarCaminoConResultado(true);
 
             dataset.addValue(resultadoSinPoda.caminosExplorados, "Sin poda", String.valueOf(i));
             dataset.addValue(resultadoConPoda.caminosExplorados, "Con poda", String.valueOf(i));

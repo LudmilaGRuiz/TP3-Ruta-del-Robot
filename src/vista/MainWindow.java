@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -29,7 +28,7 @@ public class MainWindow {
 	private PanelBotones topPanelBotones;
 	private JTextField[][] tablero;
 	private JPanel panelContenedor;
-	private JTable tablaResultados;
+	private PanelResultados panelResultados;
 	private ChartPanel chartPanel;
 
 	public MainWindow(Controlador controlador) {
@@ -51,25 +50,16 @@ public class MainWindow {
 
 		topPanelBotones = new PanelBotones(this);
 		fondoPanel = new FondoConImagen("homer.png");
+
+		panelResultados = new PanelResultados();
+
 		frame.add(topPanelBotones, BorderLayout.NORTH);
 		frame.add(fondoPanel, BorderLayout.CENTER);
-
-		/*
-		 * controlador.crearTablero(29, 30);
-		 * controlador.dibujarTabla();
-		 */
-		tablaResultados = new JTable(new DefaultTableModel(
-				new Object[] { "Tamaño", "Tiempo sin poda (ms)", "Tiempo con poda (ms)", "Caminos explorados" }, 0));
-		tablaResultados.setEnabled(false);
-		JPanel panelTablaResultados = new JPanel(new BorderLayout());
-		panelTablaResultados.setPreferredSize(new Dimension(1000, 150)); // Limita la altura de la tabla
-		panelTablaResultados.add(new JScrollPane(tablaResultados));
-
-		frame.add(panelTablaResultados, BorderLayout.SOUTH);
+		frame.add(panelResultados, BorderLayout.SOUTH);
 	}
 
 	public void stressTest() {
-		// Elimina cualquier gráfico anterior
+		limpiarResultados();
 		frame.remove(fondoPanel);
 		if (chartPanel != null) {
 			frame.remove(chartPanel);
@@ -82,7 +72,7 @@ public class MainWindow {
 				"Comparación de intentos con y sin poda",
 				"Instancia",
 				"Intentos",
-				controlador.dataGrafico(),
+				controlador.dataGraficoStress(),
 				PlotOrientation.VERTICAL, true, false, false);
 		chartPanel = new ChartPanel(chart);
 		frame.add(chartPanel, BorderLayout.CENTER);
@@ -91,7 +81,6 @@ public class MainWindow {
 
 	public void dibujarTabla(int filas, int columnas, Boolean[][] celdas) {
 		tablero = new JTextField[filas][columnas];
-		// Si ya había una tabla previa, la removemos
 		verificarComponentes();
 		JPanel panelTablero = new JPanel(new GridLayout(filas, columnas, 2, 2));
 
@@ -118,25 +107,27 @@ public class MainWindow {
 
 	private void verificarComponentes() {
 		frame.remove(fondoPanel);
-		if (chartPanel != null) frame.remove(chartPanel);
-		if (panelContenedor != null) frame.remove(panelContenedor);
+		if (chartPanel != null)
+			frame.remove(chartPanel);
+		if (panelContenedor != null)
+			frame.remove(panelContenedor);
 	}
 
 	public void pintarTablero(ArrayList<Boolean> movimientos, boolean conPoda) {
 		int x = 0, y = 0;
-		tablero[x][y].setBackground(Color.YELLOW); // Pintar primera celda de amarillo
+		tablero[x][y].setBackground(Color.YELLOW);
 
 		for (Boolean movimiento : movimientos) {
 			if (movimiento)
-				y++; // Movimiento a la derecha
+				y++;
 			else
-				x++; // Movimiento hacia abajo
+				x++;
 			if (conPoda && tablero[x][y].getBackground() == Color.WHITE) {
-				tablero[x][y].setBackground(Color.GREEN); // Pintar de verde primer casillero
+				tablero[x][y].setBackground(Color.GREEN);
 			} else if (tablero[x][y].getBackground() == Color.WHITE) {
-				tablero[x][y].setBackground(Color.RED); // Pintar de rojo primer casillero
+				tablero[x][y].setBackground(Color.RED);
 			} else {
-				tablero[x][y].setBackground(Color.YELLOW); // Pintar de amarillo los demás casilleros
+				tablero[x][y].setBackground(Color.YELLOW);
 			}
 		}
 		repintar();
@@ -144,16 +135,15 @@ public class MainWindow {
 
 	public void mostrarResultados(int filas, int columnas, Long tiempoSinPoda, Long tiempoConPoda, int intentosSinPoda,
 			int intentosConPoda) {
-		DefaultTableModel model = (DefaultTableModel) tablaResultados.getModel();
-		// model.setRowCount(0);
-		Object[] datos = new Object[] {
-				filas + "x" + columnas,
-				tiempoSinPoda,
-				tiempoConPoda,
-				intentosSinPoda + " / " + intentosConPoda
-		};
-		model.addRow(datos);
+		panelResultados.agregarResultado(filas, columnas, tiempoSinPoda, tiempoConPoda, intentosSinPoda, intentosConPoda);
+	}
 
+	public void limpiarResultados() {
+		panelResultados.limpiarResultados();
+	}
+
+	public JTable getTablaResultados() {
+		return panelResultados.getTablaResultados();
 	}
 
 	public void repintar() {

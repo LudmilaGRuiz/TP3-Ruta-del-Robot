@@ -15,12 +15,12 @@ public class Instancia {
         this.tablero.tableroAleatorio();
     }
 
-    public Resultado encontrarCaminoConResultado(boolean conPoda){
+    public Resultado encontrarCaminoConResultado(boolean conPoda) {
         contadorIntentos = 0;
         Long startTime = System.currentTimeMillis();
         ArrayList<Boolean> camino = encontrarCaminoValido(conPoda);
         Long endTime = System.currentTimeMillis();
-		return new Resultado(camino, (endTime-startTime) , contadorIntentos);
+        return new Resultado(camino, (endTime - startTime), contadorIntentos);
     }
 
     public ArrayList<Boolean> encontrarCaminoValido(boolean conPoda) {
@@ -42,7 +42,7 @@ public class Instancia {
         int cantidad = tablero.getColumnas() + tablero.getFilas() - 2;
         try {
             for (int i = 0; i < cantidad; i++) {
-                int casillerosRestantes = cantidad+1 - robotMov.getCantidadDeMovimientos();
+                int casillerosRestantes = cantidad + 1 - robotMov.getCantidadDeMovimientos();
                 if (conPoda && !siguientePasoEsValido(robotMov.getSumaDeCasilleros(), casillerosRestantes))
                     return robotMov;
 
@@ -63,9 +63,9 @@ public class Instancia {
         return false;
     }
 
-    private boolean siguientePasoEsValido(int suma, int casillerosRestantes) {
-        return Math.abs(suma) <= casillerosRestantes;
-	}
+    private boolean siguientePasoEsValido(int sumaCasilleros, int casillerosRestantes) {
+        return Math.abs(sumaCasilleros) <= casillerosRestantes;
+    }
 
     public Tablero getTablero() {
         return tablero;
@@ -81,18 +81,5 @@ public class Instancia {
 
     public Boolean[][] getCeldas() {
         return tablero.getCeldas();
-    }
-    
-    public static class Resultado{
-    	public final ArrayList<Boolean> camino;
-        public final long tiempo;
-        public final int caminosExplorados;
-
-        public Resultado(ArrayList<Boolean> camino, long tiempo, int caminosExplorados) {
-        	this.camino = camino;
-            this.tiempo = tiempo;
-            this.caminosExplorados = caminosExplorados;
-        }
-    	
     }
 }
