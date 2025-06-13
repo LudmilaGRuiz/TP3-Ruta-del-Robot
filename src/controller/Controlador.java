@@ -106,3 +106,4 @@ public class Controlador {
         return instancias.get(id).getTablero();
     }
 }
+

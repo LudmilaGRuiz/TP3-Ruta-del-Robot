@@ -145,7 +145,7 @@ public class MainWindow {
 	public JTable getTablaResultados() {
 		return panelResultados.getTablaResultados();
 	}
-
+	
 	public void repintar() {
 		frame.revalidate();
 		frame.repaint();
