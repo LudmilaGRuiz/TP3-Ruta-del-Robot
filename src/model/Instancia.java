@@ -11,8 +11,7 @@ public class Instancia {
     }
 
     public Instancia(int filas, int columnas) {
-        this.tablero = new Tablero(filas, columnas);
-        this.tablero.tableroAleatorio();
+        this.tablero = Tablero.aleatorio(filas, columnas);
     }
 
     public Resultado encontrarCaminoConResultado(boolean conPoda){

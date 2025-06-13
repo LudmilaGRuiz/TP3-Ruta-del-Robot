@@ -145,7 +145,6 @@ public class MainWindow {
 	public void mostrarResultados(int filas, int columnas, Long tiempoSinPoda, Long tiempoConPoda, int intentosSinPoda,
 			int intentosConPoda) {
 		DefaultTableModel model = (DefaultTableModel) tablaResultados.getModel();
-		// model.setRowCount(0);
 		Object[] datos = new Object[] {
 				filas + "x" + columnas,
 				tiempoSinPoda,
@@ -156,6 +155,11 @@ public class MainWindow {
 
 	}
 
+	public void limpiarResultados() {
+		DefaultTableModel model = (DefaultTableModel) tablaResultados.getModel();
+		model.setRowCount(0);
+	}
+	
 	public void repintar() {
 		frame.revalidate();
 		frame.repaint();

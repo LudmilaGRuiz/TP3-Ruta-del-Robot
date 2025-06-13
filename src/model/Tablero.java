@@ -7,20 +7,19 @@ public class Tablero {
     private int columnas;
     private Boolean[][] celdas;
 
-    public Tablero(int filas, int columnas) {
-        this.filas = filas;
+    public static Tablero aleatorio(int filas, int columnas) {
+    	Tablero tablero = new Tablero(filas, columnas);
+        tablero.tableroAleatorio();
+        return tablero;
+    }
+    
+	private Tablero(int filas, int columnas) {
+		this.filas = filas;
         this.columnas = columnas;
         this.celdas = new Boolean[filas][columnas];
-    }
-    public Boolean[][] getCeldas() {
-        return celdas;
-    }
-
-    public void setCeldas(Boolean[][] celdas) {
-        this.celdas = celdas;
-    }
-
-    public void tableroAleatorio() {
+	}
+	
+    private void tableroAleatorio() {
         Random random = new Random();
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
@@ -29,7 +28,6 @@ public class Tablero {
         }
     }
     
-
     public int getValorCasillero(int x, int y) {
         if (x < 0 || x >= filas || y < 0 || y >= columnas) {
             throw new IndexOutOfBoundsException("Índices fuera de los límites del tablero.");
@@ -37,6 +35,13 @@ public class Tablero {
         return celdas[x][y] ? 1 : -1;
     }
     
+    public Boolean[][] getCeldas() {
+        return celdas;
+    }
+
+    public void setCeldas(Boolean[][] celdas) {
+        this.celdas = celdas;
+    }
 
     public int getFilas() {
         return filas;

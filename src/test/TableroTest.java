@@ -10,7 +10,7 @@ class TableroTest {
 
     @BeforeEach
     void setUp() {
-        tablero = new Tablero(5, 4);
+        tablero = Tablero.aleatorio(5, 4);
     }
 
     @Test
@@ -29,7 +29,6 @@ class TableroTest {
 
     @Test
     void testTableroAleatorio() {
-        tablero.tableroAleatorio();
         Boolean[][] celdas = tablero.getCeldas();
         assertNotNull(celdas[0][0]);
     }
@@ -49,7 +48,7 @@ class TableroTest {
 
     @Test
     void testEqualsYHashCode() {
-        Tablero t2 = new Tablero(5, 4);
+        Tablero t2 = Tablero.aleatorio(5, 4);
         assertEquals(tablero, t2);
         assertEquals(tablero.hashCode(), t2.hashCode());
     }

@@ -80,7 +80,7 @@ public class Controlador {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         int filas = 5;
         int columnas = 6;
-
+        window.limpiarResultados();
         for (int i = 0; i < 30; i++) {
             filas++;
             columnas++;
@@ -106,3 +106,4 @@ public class Controlador {
         return instancias.get(id).getTablero();
     }
 }
+
